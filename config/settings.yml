@@ -1,0 +1,11 @@
+system:
+  title: '書籍販売管理システム'
+  url: 'https://book-sale-system.herokuapp.com/'
+  description: '書籍の購入を忘れなくなる！'
+  twitter_site: newburu
+  twitter:
+    url: 'https://twitter.com/'
+    tweet_url: 'http://twitter.com/intent/tweet?'
+    share_url: 'http://twitter.com/share?'
+  portal:
+    limit: 10

@@ -1,0 +1,64 @@
+.main1-app
+  .container
+    .row
+      .col-sm-12
+        h2
+          = "書籍の購入を忘れなくなる！"
+          p
+            = "新刊情報をキャッチ出来る！"
+            br
+            = "好きな作家さんを登録して、販売情報を確認しましょう！"
+    - unless current_user.present?
+      .row
+        .col-sm-12
+          = link_to user_twitter_omniauth_authorize_path, {class: "btn btn-social btn-twitter"}
+            i.fa.fa-twitter.left
+            = "Twitterでログイン"
+
+.main2-app
+  .container
+    .row
+      .col-sm-4
+        .main2-sub
+          h3
+            = "販売情報"
+            p
+              = image_tag "now_printing.png", size: "250x250"
+            p
+              = "登録した作者さんの書籍販売情報が確認出来ます。"
+      .col-sm-4
+        .main2-sub
+          h3
+            = "新刊情報"
+            p
+              = image_tag "now_printing.png", size: "250x250"
+            p
+              = "好きな作者さんを登録する仕様のため、"
+              = "新刊情報など、知らなかった情報もゲット出来ます。"
+      .col-sm-4
+        .main2-sub
+          h3
+            = "Twitter連携"
+            p
+              = image_tag "now_printing.png", size: "250x250"
+            p
+              = "Twitterと連携しているため、定期的に当サイトを確認しなくても最新情報をゲット出来ます。"
+
+.main3-app
+  .container
+    .row
+      .col-sm-5
+        = image_tag "circle.jpg", class: "img-responsive center-block"
+      .col-sm-7
+        h2
+          = "もっと共有して、輪を広げよう！"
+          br
+          br
+          p
+            = "当サイトの拡散にご協力ください。"
+          br
+          br
+          p
+            = link_to Settings.system[:twitter][:share_url] + "url=#{Settings.system[:url]}&text=#{Settings.system[:description]}%0a%0a＃" + "#{Settings.system[:title]}%0a", {class: "btn btn-social btn-twitter", target: "_blank"}
+              i.fa.fa-twitter.left
+              = "Twitterで共有"
