@@ -1,0 +1,40 @@
+h1 = t('activerecord.models.writer')
+hr
+= search_form_for @q do |f|
+  .row
+    .col-sm-5
+      = f.input :name_cont, required: false, label: t('activerecord.attributes.writer.name')
+  .row
+    .col-sm-5
+      = f.input :publisher_id_eq, collection: @publishers, label_method: :name, value_method: :id, include_blank: true, required: false, label: t('activerecord.attributes.writer.publisher')
+  .btn-toolbar
+    .btn-group.mr-2
+      = f.submit class: "btn btn-primary"
+    .btn-group.mr-2
+      = link_to t('helpers.submit.create'), new_writer_path, class: "btn btn-secondary"
+
+hr
+
+table.table.table-striped.table-hover.table-responsive.table-bordered
+  thead
+    tr
+      th = sort_link(@q, :name)
+      th = sort_link(@q, :publisher_id)
+      th
+      th
+      th
+
+  tbody
+    - @writers.each do |writer|
+      tr
+        td = writer.name
+        td = writer.publisher.name
+        td
+          = link_to t('simple_form.btn.show'), writer, class: 'btn btn-light'
+        td
+          = link_to t('simple_form.btn.edit'), edit_writer_path(writer), class: 'btn btn-light'
+        td
+          = link_to t('simple_form.btn.destory'), writer, data: { confirm: t('simple_form.delete_confirm') }, method: :delete, class: 'btn btn-light'
+
+hr
+= paginate @writers

@@ -1,0 +1,7 @@
+ja:
+  activerecord:
+    models:
+      publisher: 出版社
+    attributes:
+      publisher:
+        name: 名前

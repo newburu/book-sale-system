@@ -1,0 +1,35 @@
+h1 = t('activerecord.models.publisher')
+hr
+= search_form_for @q do |f|
+  .row
+    .col-sm-5
+      = f.input :name_cont, required: false, label: t('activerecord.attributes.writer.name')
+  .btn-toolbar
+    .btn-group.mr-2
+      = f.submit class: "btn btn-primary"
+    .btn-group.mr-2
+      = link_to t('helpers.submit.create'), new_publisher_path, class: "btn btn-secondary"
+
+hr
+
+table.table.table-striped.table-hover.table-responsive.table-bordered
+  thead
+    tr
+      th = sort_link(@q, :name)
+      th
+      th
+      th
+
+  tbody
+    - @publishers.each do |publisher|
+      tr
+        td = publisher.name
+        td
+          = link_to t('simple_form.btn.show'), publisher, class: 'btn btn-light'
+        td
+          = link_to t('simple_form.btn.edit'), edit_publisher_path(publisher), class: 'btn btn-light'
+        td
+          = link_to t('simple_form.btn.destory'), publisher, data: { confirm: t('simple_form.delete_confirm') }, method: :delete, class: 'btn btn-light'
+
+hr
+= paginate @publishers

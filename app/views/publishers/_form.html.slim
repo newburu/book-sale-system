@@ -1,0 +1,18 @@
+= simple_form_for @publisher do |f|
+  = f.error_notification
+
+  .form-inputs.table
+    .row
+      .col-sm-12
+        = f.input :name
+
+  hr
+  
+  .btn-toolbar
+    .btn-group.mr-2
+      .form-actions
+        = f.button :submit, class: "btn btn-primary"
+    .btn-group.mr-2
+      = link_to t('simple_form.btn.back'), publishers_path, class: "btn btn-secondary"
+  
+  hr
