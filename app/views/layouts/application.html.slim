@@ -27,6 +27,7 @@ html lang="en"
       #navbar.navbar-collapse.collapse
         ul.navbar-nav.mr-auto
           - if user_signed_in?
+            li.nav-item = link_to "お気に入り作家", user_writers_path, {class: "nav-link"}
             li.nav-item.dropdown
               = link_to 'マスタ設定', '#', {class: "nav-link dropdown-toggle", data: {toggle: "dropdown"}}
               .dropdown-menu

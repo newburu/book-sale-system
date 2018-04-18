@@ -1,0 +1,21 @@
+= simple_form_for @user_writer do |f|
+  = f.error_notification
+
+  .form-inputs.table
+    .row
+      .col-sm-12
+        = f.input :user_id, as: :hidden, input_html: {value: current_user.id}
+    .row
+      .col-sm-12
+        = f.association :writer, label: "#{t('activerecord.attributes.user_writer.writer')}"
+
+  hr
+  
+  .btn-toolbar
+    .btn-group.mr-2
+      .form-actions
+        = f.button :submit, class: "btn btn-primary"
+    .btn-group.mr-2
+      = link_to t('simple_form.btn.back'), user_writers_path, class: "btn btn-secondary"
+  
+  hr

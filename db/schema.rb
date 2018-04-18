@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20180418100459) do
+ActiveRecord::Schema.define(version: 20180418113718) do
 
   create_table "friendly_id_slugs", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8" do |t|
     t.string "slug", null: false
@@ -48,6 +48,15 @@ ActiveRecord::Schema.define(version: 20180418100459) do
     t.index ["user_id"], name: "index_user_options_on_user_id"
   end
 
+  create_table "user_writers", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8" do |t|
+    t.bigint "user_id"
+    t.bigint "writer_id"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["user_id"], name: "index_user_writers_on_user_id"
+    t.index ["writer_id"], name: "index_user_writers_on_writer_id"
+  end
+
   create_table "users", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8" do |t|
     t.integer "sign_in_count", default: 0
     t.datetime "current_sign_in_at"
@@ -75,5 +84,7 @@ ActiveRecord::Schema.define(version: 20180418100459) do
   end
 
   add_foreign_key "user_options", "users"
+  add_foreign_key "user_writers", "users"
+  add_foreign_key "user_writers", "writers"
   add_foreign_key "writers", "publishers"
 end
