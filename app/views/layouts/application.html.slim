@@ -27,12 +27,11 @@ html lang="en"
       #navbar.navbar-collapse.collapse
         ul.navbar-nav.mr-auto
           - if user_signed_in?
-            /li.nav-item.dropdown
-            /  = link_to '機能', '#', {class: "nav-link dropdown-toggle", data: {toggle: "dropdown"}}
-            /  .dropdown-menu
-            /    = link_to 'デザイン検索', designs_path, {class: "dropdown-item"}
-            li.nav-item = link_to "作家情報", writers_path, {class: "nav-link"}
-            li.nav-item = link_to "出版社情報", publishers_path, {class: "nav-link"}
+            li.nav-item.dropdown
+              = link_to 'マスタ設定', '#', {class: "nav-link dropdown-toggle", data: {toggle: "dropdown"}}
+              .dropdown-menu
+                = link_to '作家情報', writers_path, {class: "dropdown-item"}
+                = link_to '出版社情報', publishers_path, {class: "dropdown-item"}
 
           li.nav-item = link_to "このサイトについて", static_pages_info_path, {class: "nav-link"}
           li.nav-item = link_to "更新履歴＆予定", static_pages_update_path, {class: "nav-link"}
