@@ -6,6 +6,8 @@ class WritersController < InheritedResources::Base
     @writers = @q.result
     @writers = @writers.page(params[:page])
     @publishers = Publisher.all
+
+    render layout: 'dialog' if params[:mode] == 'dialog'
   end
 
   private

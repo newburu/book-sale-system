@@ -4,6 +4,9 @@ class User < ApplicationRecord
   # 設定
   has_one :option, :class_name => "UserOption"
   accepts_nested_attributes_for :option
+  
+  # 好きな作家
+  has_many :user_writers
 
   validates :name, presence: true, uniqueness: true
 

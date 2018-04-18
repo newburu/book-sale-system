@@ -5,9 +5,12 @@
     .row
       .col-sm-12
         = f.input :user_id, as: :hidden, input_html: {value: current_user.id}
-    .row
-      .col-sm-12
-        = f.association :writer, label: "#{t('activerecord.attributes.user_writer.writer')}"
+    .row.align-items-center
+      .col-sm-4
+        = f.input :writer, readonly: true, input_html: {id: "writer", value: "#{@user_writer.writer.try(:name)}"}
+        = f.input :writer_id, as: 'hidden', input_html: {id: "writer_id"}
+      .col-sm-1
+        = button_tag '選択', type: "button", class: "btn btn-lg btn-primary align-bottom", onclick: "open_window('writer')"
 
   hr
   
