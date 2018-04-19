@@ -4,6 +4,6 @@ ja:
       writer: 作家
     attributes:
       writer:
-        name: 名前
+        name: 作家名
         publisher: 出版社
         publisher_id: 出版社
