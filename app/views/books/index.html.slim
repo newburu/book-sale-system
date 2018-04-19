@@ -1,0 +1,57 @@
+h1 = t('activerecord.models.book')
+hr
+= search_form_for @q do |f|
+  .row
+    .col-sm-5
+      = f.input :name_cont, required: false, label: t('activerecord.attributes.book.name')
+      = hidden_field_tag :mode, params[:mode]
+  .btn-toolbar
+    .btn-group.mr-2
+      = f.submit class: "btn btn-primary"
+    - if params[:mode] == 'dialog'
+      .btn-group.mr-2
+        = button_tag t('helpers.submit.close'), type: 'button', class: "btn btn-secondary", onclick: 'window.close()'
+    - else
+      .btn-group.mr-2
+        = link_to t('helpers.submit.create'), new_book_path, class: "btn btn-secondary"
+
+hr
+
+table.table.table-striped.table-hover.table-responsive.table-bordered
+  thead
+    tr
+      th = sort_link(@q, :name)
+      th = sort_link(@q, :money)
+      th = sort_link(@q, :sale_date)
+      th = sort_link(@q, :isbn)
+      th = sort_link(@q, :writer_id)
+      - if params[:mode] != 'dialog'
+        th
+        th
+        th
+
+  tbody
+    - @books.each do |book|
+      - if params[:mode] == 'dialog'
+        tr onclick="window.opener.dialog_select('book', '#{book.name}', 'book_id', '#{book.id}');window.close();"
+          td = book.name
+          td = book.money
+          td = book.sale_date
+          td = book.isbn
+          td = book.writer.name
+      - else
+        tr
+          td = book.name
+          td = book.money
+          td = book.sale_date
+          td = book.isbn
+          td = book.writer.name
+          td
+            = link_to t('simple_form.btn.show'), book, class: 'btn btn-light'
+          td
+            = link_to t('simple_form.btn.edit'), edit_book_path(book), class: 'btn btn-light'
+          td
+            = link_to t('simple_form.btn.destory'), book, data: { confirm: t('simple_form.delete_confirm') }, method: :delete, class: 'btn btn-light'
+
+hr
+= paginate @books

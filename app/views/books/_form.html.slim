@@ -1,0 +1,30 @@
+= simple_form_for @book do |f|
+  = f.error_notification
+
+  .form-inputs.table
+    .row
+      .col-sm-12
+        = f.input :name
+    .row
+      .col-sm-12
+        = f.input :money
+    .row
+      .col-sm-12
+        = f.input :sale_date
+    .row
+      .col-sm-12
+        = f.input :isbn
+    .row
+      .col-sm-12
+        = f.association :writer
+
+  hr
+  
+  .btn-toolbar
+    .btn-group.mr-2
+      .form-actions
+        = f.button :submit, class: "btn btn-primary"
+    .btn-group.mr-2
+      = link_to t('simple_form.btn.back'), books_path, class: "btn btn-secondary"
+  
+  hr

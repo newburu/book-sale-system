@@ -1,0 +1,11 @@
+ja:
+  activerecord:
+    models:
+      book: 書籍
+    attributes:
+      book:
+        name: 名前
+        money: 金額
+        sale_date: 発売日
+        isbn: ISBN
+        writer: 作家
