@@ -11,6 +11,7 @@ Rails.application.routes.draw do
   root 'portals#index'
 
   get '/portals', to: 'portals#index'
+  get '/mypage', to: 'portals#mypage'
 
   # 静的ページ
   get 'static_pages/info'

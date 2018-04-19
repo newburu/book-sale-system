@@ -46,7 +46,7 @@ html lang="en"
           - else
             li.nav-item = link_to "Twitterでログイン", user_twitter_omniauth_authorize_path, {class: "nav-link"}
 
-  - if controller_name != "portals"
+  - if controller_name != "portals" || action_name != "index"
     .container
       .row
         .col-lg
