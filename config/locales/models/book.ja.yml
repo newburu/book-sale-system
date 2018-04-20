@@ -5,6 +5,7 @@ ja:
     attributes:
       book:
         name: 名前
+        image_url: 画像
         money: 金額
         sale_date: 発売日
         isbn: ISBN

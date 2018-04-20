@@ -16,7 +16,9 @@ ActiveRecord::Schema.define(version: 20180419111709) do
     t.string "name"
     t.integer "money"
     t.date "sale_date"
-    t.integer "isbn"
+    t.string "isbn"
+    t.text "url"
+    t.text "image_url"
     t.bigint "writer_id"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false

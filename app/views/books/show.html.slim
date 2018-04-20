@@ -7,9 +7,14 @@ hr
     = @book.name
 .card
   .card-header
+    strong = "#{t('activerecord.attributes.book.image_url')}:"
+  .card-body
+    = link_to image_tag(@book.image_url || "now_printing.png", {size: "100x100"}), @book.url, {target: "_blank"}
+.card
+  .card-header
     strong = "#{t('activerecord.attributes.book.money')}:"
   .card-body
-    = @book.money
+    = number_to_currency(@book.money)
 .card
   .card-header
     strong = "#{t('activerecord.attributes.book.sale_date')}:"

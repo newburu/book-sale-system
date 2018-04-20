@@ -4,7 +4,9 @@ class CreateBooks < ActiveRecord::Migration[5.1]
       t.string :name
       t.integer :money
       t.date :sale_date
-      t.integer :isbn
+      t.string :isbn
+      t.text :url
+      t.text :image_url
       t.references :writer, foreign_key: true
 
       t.timestamps

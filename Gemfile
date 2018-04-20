@@ -125,3 +125,7 @@ gem 'kaminari'
 
 # BULK INSERT
 gem 'activerecord-import'
+
+# AmazonAPI
+gem 'amazon-ecs'
+
