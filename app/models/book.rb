@@ -3,7 +3,9 @@ class Book < ApplicationRecord
 
   def self.update_books
     Book.delete_all
-    writers = Writer.all
+    user_writers = UserWriter.all.pluck(:writer_id).uniq
+    con = {id_in: user_writers}
+    writers = Writer.ransack(con).result
     writers.each do |writer|
       books = []
       amazon = Amazon::Ecs.item_search(writer.name, :response_group => 'Images,ItemAttributes,OfferSummary', :search_index => 'Books', :country => 'jp')
