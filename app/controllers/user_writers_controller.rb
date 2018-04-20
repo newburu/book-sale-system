@@ -1,7 +1,9 @@
 class UserWritersController < InheritedResources::Base
 
   def index
-    @q = UserWriter.ransack(params[:q])
+    con = {user_id_eq: current_user.id}
+    con = con.merge(params[:q].to_unsafe_h) if params[:q].present?
+    @q = UserWriter.ransack(con)
     
     @user_writers = @q.result
     @user_writers = @user_writers.page(params[:page])
