@@ -2,8 +2,6 @@ class PortalsController < ApplicationController
   
   def index
     redirect_to mypage_path if current_user.present?
-    
-    Book.update_books
   end
   
   def mypage

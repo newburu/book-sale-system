@@ -14,7 +14,6 @@ class Book < ApplicationRecord
         book.money = item.get("OfferSummary/LowestNewPrice/Amount")  # 定価
         book.isbn = item.get("ItemAttributes/ISBN")  # ISBN
         book.url = item.get("DetailPageURL")  # 詳細ページURL
-        p item.get("ThumbnailImage/URL")  # 画像URL
         book.image_url = item.get("ImageSets/ImageSet/ThumbnailImage/URL")  # 画像URL
         book.writer = writer
         
