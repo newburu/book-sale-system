@@ -9,3 +9,6 @@ system:
     share_url: 'http://twitter.com/share?'
   portal:
     limit: 10
+  image:
+    thumbnail:
+      size: "52x75"
