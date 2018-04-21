@@ -129,3 +129,5 @@ gem 'activerecord-import'
 # AmazonAPI
 gem 'amazon-ecs'
 
+# モバイル切替
+gem 'jpmobile'
