@@ -24,6 +24,7 @@ class Book < ApplicationRecord
           books << book if book.isbn.present?
         end
         Book.import books
+        sleep(2)  # AmazonAPI制限のため、2秒待つ
       end
     end
   rescue => e
