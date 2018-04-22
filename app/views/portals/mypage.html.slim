@@ -19,7 +19,7 @@ table.table.table-striped.table-hover.table-responsive.table-bordered
       th
       th = sort_link(@q, :money)
       th = sort_link(@q, :isbn)
-      th = sort_link(@q, :writer_name)
+      th = sort_link(@q, :author_name)
       th
 
   tbody
@@ -30,7 +30,7 @@ table.table.table-striped.table-hover.table-responsive.table-bordered
         td = link_to image_tag(book.image_url || "now_printing.png", {size: Settings.system[:image][:thumbnail][:size]}), book.url, {target: "_blank"}
         td = number_to_currency(book.money)
         td = book.isbn
-        td = book.writer.name
+        td = book.author.name
         td
           = link_to t('simple_form.btn.show'), book_path(book, mode: 'view'), class: 'btn btn-light'
 

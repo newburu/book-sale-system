@@ -1,0 +1,29 @@
+h1 = t('activerecord.models.user_author')
+hr
+= search_form_for @q do |f|
+  .row
+    .col-sm-5
+      = f.input :author_name_cont, required: false, label: t('activerecord.attributes.user_author.author_name')
+  .btn-toolbar
+    .btn-group.mr-2
+      = f.submit class: "btn btn-primary"
+    .btn-group.mr-2
+      = link_to t('helpers.submit.create'), new_user_author_path, class: "btn btn-secondary"
+
+hr
+
+table.table.table-striped.table-hover.table-responsive.table-bordered
+  thead
+    tr
+      th = sort_link(@q, :author_name, "#{t('activerecord.attributes.user_author.author_name')}")
+      th
+
+  tbody
+    - @user_authors.each do |user_author|
+      tr
+        td = user_author.author.name
+        td
+          = link_to t('simple_form.btn.destory'), user_author, data: { confirm: t('simple_form.delete_confirm') }, method: :delete, class: 'btn btn-light'
+
+hr
+= paginate @user_authors

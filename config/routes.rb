@@ -1,9 +1,9 @@
 Rails.application.routes.draw do
   resources :books
   resources :user_options
-  resources :user_writers
+  resources :user_authors
   resources :publishers
-  resources :writers
+  resources :authors
   # For details on the DSL available within this file, see http://guides.rubyonrails.org/routing.html
 
   devise_for :users, controllers: { :omniauth_callbacks => "omniauth_callbacks" }

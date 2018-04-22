@@ -7,13 +7,13 @@ RSpec.describe "books/index", type: :view do
         :name => "Name",
         :money => 2,
         :isbn => 3,
-        :writer => nil
+        :author => nil
       ),
       Book.create!(
         :name => "Name",
         :money => 2,
         :isbn => 3,
-        :writer => nil
+        :author => nil
       )
     ])
   end

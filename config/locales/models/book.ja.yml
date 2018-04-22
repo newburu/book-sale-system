@@ -9,5 +9,5 @@ ja:
         money: 金額
         sale_date: 発売日
         isbn: ISBN
-        writer: 作家
-        writer_id: 作家
+        author: 作家
+        author_id: 作家

@@ -25,7 +25,7 @@ table.table.table-striped.table-hover.table-responsive.table-bordered
       th = sort_link(@q, :money)
       th = sort_link(@q, :sale_date)
       th = sort_link(@q, :isbn)
-      th = sort_link(@q, :writer_id)
+      th = sort_link(@q, :author_id)
       - if params[:mode] != 'dialog'
         th
         th
@@ -40,7 +40,7 @@ table.table.table-striped.table-hover.table-responsive.table-bordered
           td = number_to_currency(book.money)
           td = book.sale_date
           td = book.isbn
-          td = book.writer.name
+          td = book.author.name
       - else
         tr
           td = book.name
@@ -48,7 +48,7 @@ table.table.table-striped.table-hover.table-responsive.table-bordered
           td = number_to_currency(book.money)
           td = book.sale_date
           td = book.isbn
-          td = book.writer.name
+          td = book.author.name
           td
             = link_to t('simple_form.btn.show'), book, class: 'btn btn-light'
           td

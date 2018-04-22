@@ -2,8 +2,8 @@ function open_window(type)
 {
   switch(type)
   {
-    case "writer":
-      url = '/writers/?mode=dialog';
+    case "author":
+      url = '/authors/?mode=dialog';
       break;
   }
   window.open(url , 'SELECT', "width=500,height=700,resizable=yes,scrollbars=yes");

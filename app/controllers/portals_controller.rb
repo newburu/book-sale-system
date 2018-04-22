@@ -5,8 +5,8 @@ class PortalsController < ApplicationController
   end
   
   def mypage
-    user_writers = current_user.user_writers.pluck(:writer_id)
-    con = {writer_id_in: user_writers}
+    user_authors = current_user.user_authors.pluck(:author_id)
+    con = {author_id_in: user_authors}
     con = con.merge(params[:q].to_unsafe_h) if params[:q].present?
     @q = Book.ransack(con)
     @q.sorts = 'sale_date desc' if @q.sorts.empty?

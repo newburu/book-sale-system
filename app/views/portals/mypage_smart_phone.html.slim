@@ -18,7 +18,7 @@ table.table.table-striped.table-hover.table-responsive.table-bordered
       th = sort_link(@q, :name, "#{t('activerecord.attributes.book.name')}(#{t('activerecord.attributes.book.isbn')})")
       th
       th = sort_link(@q, :money)
-      th = sort_link(@q, :writer_name)
+      th = sort_link(@q, :author_name)
 
   tbody
     - @books.each do |book|
@@ -27,7 +27,7 @@ table.table.table-striped.table-hover.table-responsive.table-bordered
         td = link_to "#{book.name}(#{t('activerecord.attributes.book.isbn')}:#{book.isbn})", book.url, {target: "_blank"}
         td = link_to image_tag(book.image_url || "now_printing.png", {size: Settings.system[:image][:thumbnail][:size]}), book.url, {target: "_blank"}
         td = number_to_currency(book.money)
-        td = book.writer.name
+        td = book.author.name
 
 hr
 = paginate @books

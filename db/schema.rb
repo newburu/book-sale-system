@@ -12,6 +12,12 @@
 
 ActiveRecord::Schema.define(version: 20180419111709) do
 
+  create_table "authors", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8" do |t|
+    t.string "name", null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+  end
+
   create_table "books", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8" do |t|
     t.string "name"
     t.integer "money"
@@ -19,10 +25,10 @@ ActiveRecord::Schema.define(version: 20180419111709) do
     t.string "isbn"
     t.text "url"
     t.text "image_url"
-    t.bigint "writer_id"
+    t.bigint "author_id"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
-    t.index ["writer_id"], name: "index_books_on_writer_id"
+    t.index ["author_id"], name: "index_books_on_author_id"
   end
 
   create_table "friendly_id_slugs", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8" do |t|
@@ -52,6 +58,15 @@ ActiveRecord::Schema.define(version: 20180419111709) do
     t.index ["updated_at"], name: "index_sessions_on_updated_at"
   end
 
+  create_table "user_authors", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8" do |t|
+    t.bigint "user_id"
+    t.bigint "author_id"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["author_id"], name: "index_user_authors_on_author_id"
+    t.index ["user_id"], name: "index_user_authors_on_user_id"
+  end
+
   create_table "user_options", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8" do |t|
     t.bigint "user_id"
     t.boolean "dm_msg_flg"
@@ -59,15 +74,6 @@ ActiveRecord::Schema.define(version: 20180419111709) do
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.index ["user_id"], name: "index_user_options_on_user_id"
-  end
-
-  create_table "user_writers", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8" do |t|
-    t.bigint "user_id"
-    t.bigint "writer_id"
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
-    t.index ["user_id"], name: "index_user_writers_on_user_id"
-    t.index ["writer_id"], name: "index_user_writers_on_writer_id"
   end
 
   create_table "users", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8" do |t|
@@ -88,17 +94,8 @@ ActiveRecord::Schema.define(version: 20180419111709) do
     t.index ["uid"], name: "index_users_on_uid", unique: true
   end
 
-  create_table "writers", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8" do |t|
-    t.string "name", null: false
-    t.bigint "publisher_id"
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
-    t.index ["publisher_id"], name: "index_writers_on_publisher_id"
-  end
-
-  add_foreign_key "books", "writers"
+  add_foreign_key "books", "authors"
+  add_foreign_key "user_authors", "authors"
+  add_foreign_key "user_authors", "users"
   add_foreign_key "user_options", "users"
-  add_foreign_key "user_writers", "users"
-  add_foreign_key "user_writers", "writers"
-  add_foreign_key "writers", "publishers"
 end

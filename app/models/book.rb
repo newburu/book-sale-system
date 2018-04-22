@@ -1,15 +1,15 @@
 class Book < ApplicationRecord
-  belongs_to :writer
+  belongs_to :author
 
   def self.update_books
     Book.transaction do
       Book.delete_all
-      user_writers = UserWriter.all.pluck(:writer_id).uniq
-      con = {id_in: user_writers}
-      writers = Writer.ransack(con).result
-      writers.each do |writer|
+      user_authors = UserAuthor.all.pluck(:author_id).uniq
+      con = {id_in: user_authors}
+      authors = Author.ransack(con).result
+      authors.each do |author|
         books = []
-        amazon = Amazon::Ecs.item_search(writer.name, :response_group => 'Images,ItemAttributes,OfferSummary', :search_index => 'Books', :country => 'jp')
+        amazon = Amazon::Ecs.item_search(author.name, :response_group => 'Images,ItemAttributes,OfferSummary', :search_index => 'Books', :country => 'jp')
         amazon.items.each do |item|
           book = Book.new
           book.name = item.get("ItemAttributes/Title")  # 商品タイトル
@@ -18,7 +18,7 @@ class Book < ApplicationRecord
           book.isbn = item.get("ItemAttributes/ISBN")  # ISBN
           book.url = item.get("DetailPageURL")  # 詳細ページURL
           book.image_url = item.get("SmallImage/URL")  # 画像URL
-          book.writer = writer
+          book.author = author
           
           # ISBNが無い場合は、セット販売等になるため、登録しない
           books << book if book.isbn.present?

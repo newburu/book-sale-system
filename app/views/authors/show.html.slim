@@ -1,0 +1,15 @@
+h1 参照
+hr
+.card
+  .card-header
+    strong = "#{t('activerecord.attributes.author.name')}:"
+  .card-body
+    = @author.name
+
+hr
+.btn-toolbar
+  .btn-group.mr-2
+    = link_to t('simple_form.btn.edit'), edit_author_path(@author), class: "btn btn-primary"
+  .btn-group.mr-2
+    = link_to t('simple_form.btn.back'), authors_path, class: "btn btn-secondary"
+hr

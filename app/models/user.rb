@@ -6,7 +6,7 @@ class User < ApplicationRecord
   accepts_nested_attributes_for :option
   
   # 好きな作家
-  has_many :user_writers
+  has_many :user_authors
 
   validates :name, presence: true, uniqueness: true
 

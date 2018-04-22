@@ -1,0 +1,9 @@
+ja:
+  activerecord:
+    models:
+      author: 作家
+    attributes:
+      author:
+        name: 作家名
+        publisher: 出版社
+        publisher_id: 出版社

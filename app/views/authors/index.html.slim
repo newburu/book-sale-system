@@ -1,0 +1,45 @@
+h1 = t('activerecord.models.author')
+hr
+= search_form_for @q do |f|
+  .row
+    .col-sm-5
+      = f.input :name_cont, required: false, label: t('activerecord.attributes.author.name')
+      = hidden_field_tag :mode, params[:mode]
+  .btn-toolbar
+    .btn-group.mr-2
+      = f.submit class: "btn btn-primary"
+    - if params[:mode] == 'dialog'
+      .btn-group.mr-2
+        = button_tag t('helpers.submit.close'), type: 'button', class: "btn btn-secondary", onclick: 'window.close()'
+    - else
+      .btn-group.mr-2
+        = link_to t('helpers.submit.create'), new_author_path, class: "btn btn-secondary"
+
+hr
+
+table.table.table-striped.table-hover.table-responsive.table-bordered
+  thead
+    tr
+      th = sort_link(@q, :name)
+      - if params[:mode] != 'dialog'
+        th
+        th
+        th
+
+  tbody
+    - @authors.each do |author|
+      - if params[:mode] == 'dialog'
+        tr onclick="window.opener.dialog_select('author', '#{author.name}', 'author_id', '#{author.id}');window.close();"
+          td = author.name
+      - else
+        tr
+          td = author.name
+          td
+            = link_to t('simple_form.btn.show'), author, class: 'btn btn-light'
+          td
+            = link_to t('simple_form.btn.edit'), edit_author_path(author), class: 'btn btn-light'
+          td
+            = link_to t('simple_form.btn.destory'), author, data: { confirm: t('simple_form.delete_confirm') }, method: :delete, class: 'btn btn-light'
+
+hr
+= paginate @authors

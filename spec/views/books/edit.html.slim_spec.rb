@@ -1,4 +1,4 @@
-require 'rails_helper'
+authorrequire 'rails_helper'
 
 RSpec.describe "books/edit", type: :view do
   before(:each) do
@@ -6,7 +6,7 @@ RSpec.describe "books/edit", type: :view do
       :name => "MyString",
       :money => 1,
       :isbn => 1,
-      :writer => nil
+      :author => nil
     ))
   end
 
@@ -21,7 +21,7 @@ RSpec.describe "books/edit", type: :view do
 
       assert_select "input[name=?]", "book[isbn]"
 
-      assert_select "input[name=?]", "book[writer_id]"
+      assert_select "input[name=?]", "book[author_id]"
     end
   end
 end

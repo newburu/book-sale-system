@@ -6,7 +6,7 @@ RSpec.describe "books/show", type: :view do
       :name => "Name",
       :money => 2,
       :isbn => 3,
-      :writer => nil
+      :author => nil
     ))
   end
 
