@@ -8,7 +8,7 @@ class User < ApplicationRecord
   # 好きな作家
   has_many :user_authors
 
-  validates :name, presence: true, uniqueness: true
+  validates :name, presence: true
 
   #############
   # スコープ
