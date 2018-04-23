@@ -5,6 +5,9 @@ class PortalsController < ApplicationController
   end
   
   def mypage
+    # ログインしていなければ、TOPページに移動
+    redirect_to root_url and return unless current_user.present?
+
     user_authors = current_user.user_authors.pluck(:author_id)
     con = {author_id_in: user_authors}
     con = con.merge(params[:q].to_unsafe_h) if params[:q].present?
