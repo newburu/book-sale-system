@@ -13,6 +13,7 @@ class User < ApplicationRecord
   #############
   # スコープ
   scope :auto_update_users, -> {includes(:option).where(user_options: {auto_update_flg: true})}
+  scope :dm_msg_users, -> {includes(:option).where(user_options: {dm_msg_flg: true})}
 
   def self.new_with_session(params, session)
     if session["devise.user_attributes"]
@@ -43,12 +44,43 @@ class User < ApplicationRecord
     user
   end
 
+  # 更新情報をDMする
+  def send_dm_books(dm_books)
+    send_flg = false
+    msg = "##{Settings.system[:title]} よりお知らせ\r\n\r\n"
+    dm_books.each do |key, books|
+      if key == 0
+        msg += "◆本日発売！\r\n"
+      else
+        msg += "◆発売#{key}日前\r\n"
+      end
+      if books.blank?
+        msg += "なし\r\n"
+      else
+        send_flg = true
+      end
+      books.each do |book|
+        msg += "#{book.name}(ISBN:#{book.isbn})\r\n"
+      end
+    end
+    msg += "\r\n詳細はログインしてご確認ください。\r\n#{Settings.system[:url]}"
+
+    if send_flg
+      p "======="
+      p "#{name}(#{screen_name})"
+      p "======="
+      p msg
+      twitter_client.create_direct_message(uid, msg)
+    end
+  end
+
   def twitter_client
     Twitter::REST::Client.new do |config|
-        config.consumer_key        = ENV["TWITTER_API_KEY"]
-        config.consumer_secret     = ENV["TWITTER_SECRET_KEY"]
-        config.access_token        = access_token
-        config.access_token_secret = access_token_secret
+      p ENV["TWITTER_API_KEY"]
+      config.consumer_key        = ENV["TWITTER_API_KEY"]
+      config.consumer_secret     = ENV["TWITTER_SECRET_KEY"]
+      config.access_token        = access_token
+      config.access_token_secret = access_token_secret
     end
   end
 

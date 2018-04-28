@@ -31,4 +31,26 @@ class Book < ApplicationRecord
     p e.message
   end
 
+  # 更新情報をDMする
+  def self.send_dm_books
+    User.dm_msg_users.each do |user|
+      user_authors = user.user_authors.pluck(:author_id)
+      con = {author_id_in: user_authors}
+      books = Book.ransack(con)
+      books.sorts = 'sale_date desc'
+      
+      timings = Settings.system[:send_dm][:timing]
+      dm_books = {}
+      timings.each do |timing|
+        timing_books = []
+        books.result.each do |book|
+          timing_books << book if (book.sale_date - Date.today).to_i == timing.to_i
+        end
+        dm_books.store(timing, timing_books)
+      end
+      # 結果をDM連絡
+      user.send_dm_books(dm_books)
+    end
+  end
+
 end

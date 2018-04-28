@@ -12,3 +12,5 @@ system:
   image:
     thumbnail:
       size: "52x75"
+  send_dm:
+    timing: [0,1,3,5,10]
