@@ -1,7 +1,7 @@
 system:
   title: '書籍販売管理システム'
   url: 'https://book-sale-system.herokuapp.com/'
-  description: '書籍の購入を忘れなくなる！'
+  description: '書籍の購入を忘れなくなる！好きな作家さんを登録して、販売情報を確認しましょう！'
   twitter_site: newburu
   twitter:
     url: 'https://twitter.com/'
