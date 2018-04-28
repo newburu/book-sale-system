@@ -9,6 +9,11 @@ class UserAuthorsController < InheritedResources::Base
     @user_authors = @user_authors.page(params[:page])
   end
 
+  # 登録後の遷移先をindexにする
+  def create
+    create! { user_authors_path }
+  end
+
   private
 
     def user_author_params
