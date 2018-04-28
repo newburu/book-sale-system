@@ -9,7 +9,17 @@ class Book < ApplicationRecord
       authors = Author.ransack(con).result
       authors.each do |author|
         books = []
-        amazon = Amazon::Ecs.item_search(author.name, :response_group => 'Images,ItemAttributes,OfferSummary', :search_index => 'Books', :country => 'jp')
+        retry_count = 0
+        begin
+          amazon = Amazon::Ecs.item_search(author.name, :response_group => 'Images,ItemAttributes,OfferSummary', :search_index => 'Books', :country => 'jp')
+        rescue
+          # 失敗した場合は、5秒待ってリトライ(５回まで)
+          retry_count += 1
+          if retry_count < 5
+            sleep(5)
+            retry
+          end
+        end
         amazon.items.each do |item|
           book = Book.new
           book.name = item.get("ItemAttributes/Title")  # 商品タイトル
