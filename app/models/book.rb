@@ -5,7 +5,7 @@ class Book < ApplicationRecord
     Book.transaction do
       Book.delete_all
       user_authors = UserAuthor.all.pluck(:author_id).uniq
-      con = {id_in: user_authors}
+      con = {id_in: [0] + user_authors}
       authors = Author.ransack(con).result
       authors.each do |author|
         books = []
@@ -45,7 +45,7 @@ class Book < ApplicationRecord
   def self.send_dm_books
     User.dm_msg_users.each do |user|
       user_authors = user.user_authors.pluck(:author_id)
-      con = {author_id_in: user_authors}
+      con = {author_id_in: [0] + user_authors}
       books = Book.ransack(con)
       books.sorts = 'sale_date desc'
       
