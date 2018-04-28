@@ -54,7 +54,7 @@ class Book < ApplicationRecord
       timings.each do |timing|
         timing_books = []
         books.result.each do |book|
-          timing_books << book if (book.sale_date - Date.today).to_i == timing.to_i
+          timing_books << book if (book.sale_date.present?) && ((book.sale_date - Date.today).to_i == timing.to_i)
         end
         dm_books.store(timing, timing_books)
       end
