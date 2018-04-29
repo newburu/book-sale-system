@@ -2,6 +2,7 @@ class BooksController < InheritedResources::Base
 
   def index
     @q = Book.ransack(params[:q])
+    @q.sorts = 'sale_date desc' if @q.sorts.empty?
     
     @books = @q.result
     @books = @books.page(params[:page])

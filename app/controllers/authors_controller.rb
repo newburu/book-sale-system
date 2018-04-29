@@ -2,6 +2,7 @@ class AuthorsController < InheritedResources::Base
 
   def index
     @q = Author.ransack(params[:q])
+    @q.sorts = 'name asc' if @q.sorts.empty?
     
     @authors = @q.result
     @authors = @authors.page(params[:page])

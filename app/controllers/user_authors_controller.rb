@@ -4,6 +4,7 @@ class UserAuthorsController < InheritedResources::Base
     con = {user_id_eq: current_user.id}
     con = con.merge(params[:q].to_unsafe_h) if params[:q].present?
     @q = UserAuthor.ransack(con)
+    @q.sorts = 'author_name asc' if @q.sorts.empty?
     
     @user_authors = @q.result
     @user_authors = @user_authors.page(params[:page])
