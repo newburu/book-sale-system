@@ -10,6 +10,13 @@ class BooksController < InheritedResources::Base
     render layout: 'dialog' if params[:mode] == 'dialog'
   end
 
+  # 登録後の遷移先をindexにする
+  def show
+    @book = Book.find_by_id(params[:id])
+    # IDで見つからなかった場合は、ISBNで検索する
+    @book = Book.find_by_isbn(params[:isbn]) if @book.nil?
+  end
+
   private
 
     def book_params
