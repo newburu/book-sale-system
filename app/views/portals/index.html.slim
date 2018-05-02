@@ -27,9 +27,9 @@
     - unless current_user.present?
       .row
         .col-sm-12
-         / = link_to user_twitter_omniauth_authorize_path, {class: "btn btn-social btn-twitter"}
-         /   i.fa.fa-twitter.left
-         /   = "Twitterでログイン"
+          = link_to user_twitter_omniauth_authorize_path, {class: "btn btn-social btn-twitter"}
+            i.fa.fa-twitter.left
+            = "Twitterでログイン"
 
 .main2-app
   .container
