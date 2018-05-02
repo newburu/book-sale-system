@@ -33,10 +33,12 @@ class Book < ApplicationRecord
     p e
   end
 
-  def self.update_all_books
+  def self.update_all_books(page, total_page)
     Book.transaction do
       Book.delete_all
       authors = Author.all
+      per = (authors.count / total_page).ceil
+      authors = authors.page(page).per(per)
       authors.each do |author|
         books = []
         retry_count = 0
