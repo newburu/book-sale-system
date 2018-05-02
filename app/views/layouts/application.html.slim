@@ -49,7 +49,7 @@ html lang="en"
             li.nav-item = link_to '設定', edit_user_option_path(current_user), {class: "nav-link"}
             li.nav-item = link_to 'ログアウト', destroy_user_session_path, {class: "nav-link"}
           - else
-            li.nav-item = link_to "Twitterでログイン", user_twitter_omniauth_authorize_path, {class: "nav-link"}
+            /li.nav-item = link_to "Twitterでログイン", user_twitter_omniauth_authorize_path, {class: "nav-link"}
 
   - if controller_name != "portals" || action_name != "index"
     .container
