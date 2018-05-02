@@ -3,11 +3,11 @@ class Book < ApplicationRecord
 
   def self.update_books
     Book.transaction do
-      Book.delete_all
       user_authors = UserAuthor.all.pluck(:author_id).uniq
       con = {id_in: [0] + user_authors}
       authors = Author.ransack(con).result
       authors.each do |author|
+        Book.where(author: author).delete_all
         books = []
         retry_count = 0
         begin
@@ -35,11 +35,11 @@ class Book < ApplicationRecord
 
   def self.update_all_books(page, total_page)
     Book.transaction do
-      Book.delete_all
       authors = Author.all
       per = (authors.count / total_page).ceil
       authors = authors.page(page).per(per)
       authors.each do |author|
+       Book.where(author: author).delete_all
         books = []
         retry_count = 0
         begin
