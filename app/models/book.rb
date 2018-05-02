@@ -36,7 +36,7 @@ class Book < ApplicationRecord
   def self.update_all_books(page, total_page)
     Book.transaction do
       authors = Author.all
-      per = (authors.count / total_page).ceil
+      per = (authors.count.fdiv(total_page)).ceil
       authors = authors.page(page).per(per)
       authors.each do |author|
        Book.where(author: author).delete_all
