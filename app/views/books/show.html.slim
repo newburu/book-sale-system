@@ -10,11 +10,11 @@ hr
 /    strong = "#{t('activerecord.attributes.book.image_url')}:"
 /  .card-body
 /    = link_to image_tag(@book.image_url || "now_printing.png", {size: Settings.system[:image][:thumbnail][:size]}), @book.url, {target: "_blank"}
-.card
-  .card-header
-    strong = "#{t('activerecord.attributes.book.money')}:"
-  .card-body
-    = number_to_currency(@book.money)
+/.card
+/  .card-header
+/    strong = "#{t('activerecord.attributes.book.money')}:"
+/  .card-body
+/    = number_to_currency(@book.money)
 .card
   .card-header
     strong = "#{t('activerecord.attributes.book.sale_date')}:"

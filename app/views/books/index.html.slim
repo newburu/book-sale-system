@@ -22,7 +22,7 @@ table.table.table-striped.table-hover.table-responsive.table-bordered
     tr
       th = sort_link(@q, :name)
       /th = sort_link(@q, :image_url)
-      th = sort_link(@q, :money)
+      /th = sort_link(@q, :money)
       th = sort_link(@q, :sale_date)
       th = sort_link(@q, :isbn)
       th = sort_link(@q, :author_id)
@@ -38,7 +38,7 @@ table.table.table-striped.table-hover.table-responsive.table-bordered
           /td = link_to book.name, book.url, {target: "_blank"}
           td = book.name
           /td = link_to image_tag(book.image_url || "now_printing.png", {size: Settings.system[:image][:thumbnail][:size]}), book.url, {target: "_blank"}
-          td = number_to_currency(book.money)
+          /td = number_to_currency(book.money)
           td = book.sale_date
           td = book.isbn
           td = book.author.name
@@ -47,7 +47,7 @@ table.table.table-striped.table-hover.table-responsive.table-bordered
           /td = link_to book.name, book.url, {target: "_blank"}
           td = book.name
           /td = link_to image_tag(book.image_url || "now_printing.png", {size: Settings.system[:image][:thumbnail][:size]}), book.url, {target: "_blank"}
-          td = number_to_currency(book.money)
+          /td = number_to_currency(book.money)
           td = book.sale_date
           td = book.isbn
           td = book.author.name
