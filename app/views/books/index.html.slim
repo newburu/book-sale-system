@@ -21,7 +21,7 @@ table.table.table-striped.table-hover.table-responsive.table-bordered
   thead
     tr
       th = sort_link(@q, :name)
-      th = sort_link(@q, :image_url)
+      /th = sort_link(@q, :image_url)
       th = sort_link(@q, :money)
       th = sort_link(@q, :sale_date)
       th = sort_link(@q, :isbn)
@@ -35,16 +35,18 @@ table.table.table-striped.table-hover.table-responsive.table-bordered
     - @books.each do |book|
       - if params[:mode] == 'dialog'
         tr onclick="window.opener.dialog_select('book', '#{book.name}', 'book_id', '#{book.id}');window.close();"
-          td = link_to book.name, book.url, {target: "_blank"}
-          td = link_to image_tag(book.image_url || "now_printing.png", {size: Settings.system[:image][:thumbnail][:size]}), book.url, {target: "_blank"}
+          /td = link_to book.name, book.url, {target: "_blank"}
+          td = book.name
+          /td = link_to image_tag(book.image_url || "now_printing.png", {size: Settings.system[:image][:thumbnail][:size]}), book.url, {target: "_blank"}
           td = number_to_currency(book.money)
           td = book.sale_date
           td = book.isbn
           td = book.author.name
       - else
         tr
-          td = link_to book.name, book.url, {target: "_blank"}
-          td = link_to image_tag(book.image_url || "now_printing.png", {size: Settings.system[:image][:thumbnail][:size]}), book.url, {target: "_blank"}
+          /td = link_to book.name, book.url, {target: "_blank"}
+          td = book.name
+          /td = link_to image_tag(book.image_url || "now_printing.png", {size: Settings.system[:image][:thumbnail][:size]}), book.url, {target: "_blank"}
           td = number_to_currency(book.money)
           td = book.sale_date
           td = book.isbn
