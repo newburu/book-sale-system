@@ -21,15 +21,7 @@ class Book < ApplicationRecord
           end
         end
         amazon.items.each do |item|
-          book = Book.new
-          book.name = item.get("ItemAttributes/Title")  # 商品タイトル
-          book.sale_date = item.get("ItemAttributes/PublicationDate")  # 発売日
-          book.money = item.get("OfferSummary/LowestNewPrice/Amount")  # 定価
-          book.isbn = item.get("ItemAttributes/ISBN")  # ISBN
-          book.url = item.get("DetailPageURL")  # 詳細ページURL
-          book.image_url = item.get("SmallImage/URL")  # 画像URL
-          book.author = author
-          
+          book = build_amazon_item(item, author)
           # ISBNが無い場合は、セット販売等になるため、登録しない
           books << book if book.isbn.present?
         end
@@ -38,7 +30,50 @@ class Book < ApplicationRecord
       end
     end
   rescue => e
-    p e.message
+    p e
+  end
+
+  def self.update_all_books
+    Book.transaction do
+      Book.delete_all
+      authors = Author.all
+      authors.each do |author|
+        books = []
+        retry_count = 0
+        begin
+          amazon = Amazon::Ecs.item_search(author.name, :response_group => 'Images,ItemAttributes,OfferSummary', :search_index => 'Books', :country => 'jp')
+        rescue
+          # 失敗した場合は、5秒待ってリトライ(５回まで)
+          retry_count += 1
+          if retry_count < 5
+            sleep(5)
+            retry
+          end
+        end
+        amazon.items.each do |item|
+          book = build_amazon_item(item, author)
+          # ISBNが無い場合は、セット販売等になるため、登録しない
+          books << book if book.isbn.present?
+        end
+        Book.import books
+        sleep(2)  # AmazonAPI制限のため、2秒待つ
+      end
+    end
+  rescue => e
+    p e
+  end
+
+  def self.build_amazon_item(item, author)
+    book = Book.new
+    book.name = item.get("ItemAttributes/Title")  # 商品タイトル
+    book.sale_date = item.get("ItemAttributes/PublicationDate")  # 発売日
+    book.money = item.get("OfferSummary/LowestNewPrice/Amount")  # 定価
+    book.isbn = item.get("ItemAttributes/ISBN")  # ISBN
+    book.url = item.get("DetailPageURL")  # 詳細ページURL
+    book.image_url = item.get("SmallImage/URL")  # 画像URL
+    book.author = author
+    
+    book
   end
 
   # 更新情報をDMする
