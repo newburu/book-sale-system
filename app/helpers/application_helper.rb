@@ -5,4 +5,8 @@ module ApplicationHelper
     link_to name, "#{Settings.system[:twitter][:url]}#{id}", target: "_blank"
   end
   
+  def login?
+    current_user.present?
+  end
+  
 end
