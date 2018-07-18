@@ -7,7 +7,9 @@ hr
       = hidden_field_tag :mode, params[:mode]
   .btn-toolbar
     .btn-group.mr-2
-      = f.submit class: "btn btn-primary"
+      = button_tag type: 'submit', class: "btn btn-primary"
+        i.fa.fa-search.left
+          = t('helpers.submit.search')
     - if params[:mode] == 'dialog'
       .btn-group.mr-2
         = button_tag t('helpers.submit.close'), type: 'button', class: "btn btn-secondary", onclick: 'window.close()'

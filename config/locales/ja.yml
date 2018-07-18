@@ -142,6 +142,7 @@ ja:
     select:
       prompt: 選択してください
     submit:
+      search: 検索する
       create: 登録する
       submit: 保存する
       update: 更新する

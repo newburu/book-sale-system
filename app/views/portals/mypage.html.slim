@@ -7,7 +7,9 @@ hr
       = hidden_field_tag :mode, params[:mode]
   .btn-toolbar
     .btn-group.mr-2
-      = f.submit class: "btn btn-primary"
+      = button_tag type: 'submit', class: "btn btn-primary"
+        i.fa.fa-search.left
+          = t('helpers.submit.search')
 
 hr
 
