@@ -8,5 +8,9 @@ module ApplicationHelper
   def login?
     current_user.present?
   end
+
+  def admin_user?
+    login? && current_user.admin?
+  end
   
 end

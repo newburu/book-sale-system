@@ -14,7 +14,7 @@ hr
       .btn-group.mr-2
         = button_tag t('helpers.submit.close'), type: 'button', class: "btn btn-secondary", onclick: 'window.close()'
     - else
-      - if login?
+      - if admin_user?
         .btn-group.mr-2
           = link_to t('helpers.submit.create'), new_book_path, class: "btn btn-secondary"
 
@@ -30,7 +30,7 @@ table.table.table-striped.table-hover.table-responsive.table-bordered
       th = sort_link(@q, :isbn)
       th = sort_link(@q, :author_id)
       th
-      - if login?
+      - if admin_user?
         th
         th
 
@@ -54,7 +54,7 @@ table.table.table-striped.table-hover.table-responsive.table-bordered
           td = book.author.name
           td
             = link_to t('simple_form.btn.show'), book, class: 'btn btn-light'
-          - if login?
+          - if admin_user?
             td
               = link_to t('simple_form.btn.edit'), edit_book_path(book), class: 'btn btn-light'
             td
