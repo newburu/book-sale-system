@@ -1,6 +1,6 @@
 class ApplicationController < ActionController::Base
   protect_from_forgery with: :exception
-  include Jpmobile::ViewSelector
+  include Jpmobile::FallbackViewSelector
 
   # エラー画面の設定
   class Forbidden < ActionController::ActionControllerError; end
