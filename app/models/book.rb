@@ -7,12 +7,14 @@ class Book < ApplicationRecord
       con = {id_in: [0] + user_authors}
       authors = Author.ransack(con).result
       authors.each do |author|
+        p author
         Book.where(author: author).delete_all
         books = []
         retry_count = 0
         begin
           amazon = Amazon::Ecs.item_search(author.name, :response_group => 'Images,ItemAttributes,OfferSummary', :search_index => 'Books', :country => 'jp')
-        rescue
+        rescue => e
+          p e
           # 失敗した場合は、5秒待ってリトライ(５回まで)
           retry_count += 1
           if retry_count < 5
@@ -20,7 +22,7 @@ class Book < ApplicationRecord
             retry
           end
         end
-        amazon.items.each do |item|
+        (amazon.try(:items) || []).each do |item|
           book = build_amazon_item(item, author)
           # ISBNが無い場合は、セット販売等になるため、登録しない
           books << book if book.isbn.present?
@@ -39,12 +41,14 @@ class Book < ApplicationRecord
       per = (authors.count.fdiv(total_page)).ceil
       authors = authors.page(page).per(per)
       authors.each do |author|
+        p author
        Book.where(author: author).delete_all
         books = []
         retry_count = 0
         begin
           amazon = Amazon::Ecs.item_search(author.name, :response_group => 'Images,ItemAttributes,OfferSummary', :search_index => 'Books', :country => 'jp')
-        rescue
+        rescue => e
+          p e
           # 失敗した場合は、5秒待ってリトライ(５回まで)
           retry_count += 1
           if retry_count < 5
@@ -52,7 +56,7 @@ class Book < ApplicationRecord
             retry
           end
         end
-        amazon.items.each do |item|
+        (amazon.try(:items) || []).each do |item|
           book = build_amazon_item(item, author)
           # ISBNが無い場合は、セット販売等になるため、登録しない
           books << book if book.isbn.present?
@@ -81,6 +85,7 @@ class Book < ApplicationRecord
   # 更新情報をDMする
   def self.send_dm_books
     User.dm_msg_users.each do |user|
+      p user
       user_authors = user.user_authors.pluck(:author_id)
       con = {author_id_in: [0] + user_authors}
       books = Book.ransack(con)
