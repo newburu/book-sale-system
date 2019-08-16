@@ -132,3 +132,6 @@ gem 'amazon-ecs'
 
 # モバイル切替
 gem 'jpmobile'
+
+# 楽天API
+gem 'rakuten_web_service'

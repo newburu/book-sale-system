@@ -42,7 +42,7 @@ class Book < ApplicationRecord
       authors = authors.page(page).per(per)
       authors.each do |author|
         p author
-       Book.where(author: author).delete_all
+        Book.where(author: author).delete_all
         books = []
         retry_count = 0
         begin
@@ -77,6 +77,96 @@ class Book < ApplicationRecord
     book.isbn = item.get("ItemAttributes/ISBN")  # ISBN
     book.url = item.get("DetailPageURL")  # 詳細ページURL
     book.image_url = item.get("SmallImage/URL")  # 画像URL
+    book.author = author
+    
+    book
+  end
+
+  def self.update_books_by_rakuten
+    Book.transaction do
+      user_authors = UserAuthor.all.pluck(:author_id).uniq
+      con = {id_in: [0] + user_authors}
+      authors = Author.ransack(con).result
+      authors.each do |author|
+        p author
+        Book.where(author: author).delete_all
+        books = []
+        retry_count = 0
+        begin
+          rakuten = RakutenWebService::Books::Book.search(author: author.name)
+        rescue => e
+          p e
+          # 失敗した場合は、5秒待ってリトライ(５回まで)
+          retry_count += 1
+          if retry_count < 5
+            sleep(5)
+            retry
+          end
+        end
+        p rakuten
+        rakuten.each do |item|
+          book = build_rakuten_item(item, author)
+          # ISBNが無い場合は、セット販売等になるため、登録しない
+          # 発売日が未確定の場合も登録しない
+          books << book if book.isbn.present? && book.sale_date.present?
+        end
+        Book.import books
+        sleep(2)  # AmazonAPI制限のため、2秒待つ
+      end
+    end
+  rescue => e
+    p e
+  end
+
+  def self.update_all_books_by_rakuten(page, total_page)
+    Book.transaction do
+      authors = Author.all
+      per = (authors.count.fdiv(total_page)).ceil
+      authors = authors.page(page).per(per)
+      authors.each do |author|
+        p author
+        Book.where(author: author).delete_all
+        books = []
+        retry_count = 0
+        begin
+          rakuten = RakutenWebService::Books::Book.search(author: author.name)
+        rescue => e
+          p e
+          # 失敗した場合は、5秒待ってリトライ(５回まで)
+          retry_count += 1
+          if retry_count < 5
+            sleep(5)
+            retry
+          end
+        end
+        p rakuten
+        rakuten.each do |item|
+          book = build_rakuten_item(item, author)
+          # ISBNが無い場合は、セット販売等になるため、登録しない
+          # 発売日が未確定の場合も登録しない
+          books << book if book.isbn.present? && book.sale_date.present?
+        end
+        Book.import books
+        sleep(2)  # AmazonAPI制限のため、2秒待つ
+      end
+    end
+  rescue => e
+    p e
+  end
+
+  def self.build_rakuten_item(item, author)
+    p item
+    book = Book.new
+    book.name = item.title  # 商品タイトル
+    # 発売日
+    if item.sales_date =~ /\d.年\d.月\d.日/
+      sales_date = item.sales_date.gsub(/[年月日]/, "")
+      book.sale_date = Date.parse(sales_date)
+    end
+    book.money = item.list_price  # 定価
+    book.isbn = item.isbn  # ISBN
+    book.url = item.affiliate_url  # 詳細ページURL
+    book.image_url = item.small_image_url  # 画像URL
     book.author = author
     
     book
