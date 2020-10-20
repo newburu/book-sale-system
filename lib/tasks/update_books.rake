@@ -1,24 +1,34 @@
 namespace :update_books do
-  desc "自動でデータを更新するタスク(Amazon)"
-  task :all_update => :environment do
-    hour = Time.now.hour
-    hour = 24 if hour == 0
-    Book.update_all_books(hour,24)
+  desc "データを更新するタスク(Amazon)"
+  task :all_update_by_amazon, ['page', 'total_page'] => :environment do |task, args|
+    page = args[:page].to_i
+    if page == 0
+      page = Time.now.hour
+      page = 24 if page == 0
+    end
+    total_page = args[:total_page].to_i
+    total_page = 24 if total_page == 0
+    Book.update_all_books_link_by_amazon(page, total_page)
   end
 
-  desc "自動でデータを更新するタスク(Amazon)"
-  task :update => :environment do
-    Book.update_books
+  desc "データを更新するタスク(Amazon)"
+  task :update_by_amazon => :environment do
+    Book.update_books_link_by_amazon
   end
 
-  desc "自動でデータを更新するタスク(楽天)"
-  task :all_update_by_rakuten => :environment do
-    hour = Time.now.hour
-    hour = 24 if hour == 0
-    Book.update_all_books_by_rakuten(hour,24)
+  desc "データを更新するタスク(楽天)"
+  task :all_update_by_rakuten, ['page', 'total_page'] => :environment do |task, args|
+    page = args[:page].to_i
+    if page == 0
+      page = Time.now.hour
+      page = 24 if page == 0
+    end
+    total_page = args[:total_page].to_i
+    total_page = 24 if total_page == 0
+    Book.update_all_books_by_rakuten(page, total_page)
   end
 
-  desc "自動でデータを更新するタスク(楽天)"
+  desc "データを更新するタスク(楽天)"
   task :update_by_rakuten => :environment do
     Book.update_books_by_rakuten
   end
