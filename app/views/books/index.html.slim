@@ -39,7 +39,12 @@ table.table.table-striped.table-hover.table-responsive.table-bordered
       - if params[:mode] == 'dialog'
         tr onclick="window.opener.dialog_select('book', '#{book.name}', 'book_id', '#{book.id}');window.close();"
           td = link_to book.name, book.url, {target: "_blank"}
-          td = link_to image_tag(book.image_url || "now_printing.png", {size: Settings.system[:image][:thumbnail][:size]}), book.url, {target: "_blank"}
+          td
+            = link_to image_tag(book.image_url || "now_printing.png", {size: Settings.system[:image][:thumbnail][:size]}), book.url, {target: "_blank"}
+            - if book.amazon_url.present?
+              =< link_to "Amazon", book.amazon_url, {target: "_blank"}
+            - if book.url.present?
+              =< link_to "楽天", book.url, {target: "_blank"}
           td = number_to_currency(book.money)
           td = book.sale_date
           td = book.isbn
@@ -47,7 +52,12 @@ table.table.table-striped.table-hover.table-responsive.table-bordered
       - else
         tr
           td = link_to book.name, book.url, {target: "_blank"}
-          td = link_to image_tag(book.image_url || "now_printing.png", {size: Settings.system[:image][:thumbnail][:size]}), book.url, {target: "_blank"}
+          td
+            = link_to image_tag(book.image_url || "now_printing.png", {size: Settings.system[:image][:thumbnail][:size]}), book.url, {target: "_blank"}
+            - if book.amazon_url.present?
+              =< link_to "Amazon", book.amazon_url, {target: "_blank"}
+            - if book.url.present?
+              =< link_to "楽天", book.url, {target: "_blank"}
           td = number_to_currency(book.money)
           td = book.sale_date
           td = book.isbn
