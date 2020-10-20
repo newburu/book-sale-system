@@ -128,7 +128,7 @@ gem 'kaminari'
 gem 'activerecord-import'
 
 # AmazonAPI
-gem 'amazon-ecs'
+gem 'paapi'
 
 # モバイル切替
 gem 'jpmobile'
