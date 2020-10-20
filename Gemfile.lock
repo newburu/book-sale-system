@@ -62,12 +62,13 @@ GEM
       tzinfo (~> 1.1)
     addressable (2.7.0)
       public_suffix (>= 2.0.2, < 5.0)
-    amazon-ecs (2.6.0)
-      nokogiri (~> 1.10)
     arel (9.0.0)
     ast (2.4.1)
     autoprefixer-rails (10.0.0.2)
       execjs
+    aws-eventstream (1.1.0)
+    aws-sigv4 (1.2.2)
+      aws-eventstream (~> 1, >= 1.0.2)
     bcrypt (3.1.16)
     better_errors (2.8.1)
       coderay (>= 1.0.0)
@@ -259,6 +260,9 @@ GEM
       omniauth-oauth (~> 1.1)
       rack
     orm_adapter (0.5.0)
+    paapi (0.1.2)
+      aws-sigv4 (~> 1)
+      http (~> 4)
     parallel (1.19.2)
     parser (2.7.1.5)
       ast (~> 2.4.1)
@@ -444,7 +448,6 @@ PLATFORMS
 DEPENDENCIES
   activerecord-import
   activerecord-session_store
-  amazon-ecs
   better_errors
   binding_of_caller
   bootstrap
@@ -470,6 +473,7 @@ DEPENDENCIES
   oauth
   omniauth
   omniauth-twitter
+  paapi
   puma (~> 3.7)
   rails (~> 5.2.0)
   rakuten_web_service

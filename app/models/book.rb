@@ -1,18 +1,16 @@
 class Book < ApplicationRecord
   belongs_to :author
 
-  def self.update_books
+  def self.update_books_link_by_amazon
     Book.transaction do
       user_authors = UserAuthor.all.pluck(:author_id).uniq
       con = {id_in: [0] + user_authors}
       authors = Author.ransack(con).result
       authors.each do |author|
         p author
-        Book.where(author: author).delete_all
-        books = []
         retry_count = 0
         begin
-          amazon = Amazon::Ecs.item_search(author.name, :response_group => 'Images,ItemAttributes,OfferSummary', :search_index => 'Books', :country => 'jp')
+          amazon = Paapi::Client.new(market: :jp).search_items(keywords: author.name, SearchIndex: "Books")
         rescue => e
           p e
           # 失敗した場合は、5秒待ってリトライ(５回まで)
@@ -25,9 +23,15 @@ class Book < ApplicationRecord
         (amazon.try(:items) || []).each do |item|
           book = build_amazon_item(item, author)
           # ISBNが無い場合は、セット販売等になるため、登録しない
-          books << book if book.isbn.present?
+          if book.isbn.present?
+            update_book = Book.where(isbn: book.isbn).first
+            p update_book
+            if update_book.present?
+              update_book.amazon_url = book.url
+              update_book.save
+            end
+          end
         end
-        Book.import books
         sleep(2)  # AmazonAPI制限のため、2秒待つ
       end
     end
@@ -35,18 +39,18 @@ class Book < ApplicationRecord
     p e
   end
 
-  def self.update_all_books(page, total_page)
+  def self.update_all_books_link_by_amazon(page, total_page)
     Book.transaction do
       authors = Author.all
       per = (authors.count.fdiv(total_page)).ceil
       authors = authors.page(page).per(per)
       authors.each do |author|
         p author
-        Book.where(author: author).delete_all
-        books = []
         retry_count = 0
         begin
-          amazon = Amazon::Ecs.item_search(author.name, :response_group => 'Images,ItemAttributes,OfferSummary', :search_index => 'Books', :country => 'jp')
+          client = Paapi::Client.new(market: :jp)
+          amazon = client.search_items(keywords: author.name, SearchIndex: "Books")
+          #p amazon
         rescue => e
           p e
           # 失敗した場合は、5秒待ってリトライ(５回まで)
@@ -59,9 +63,15 @@ class Book < ApplicationRecord
         (amazon.try(:items) || []).each do |item|
           book = build_amazon_item(item, author)
           # ISBNが無い場合は、セット販売等になるため、登録しない
-          books << book if book.isbn.present?
+          if book.isbn.present?
+            update_book = Book.where(isbn: book.isbn).first
+            if update_book.present?
+              p update_book
+              update_book.amazon_url = book.url
+              update_book.save
+            end
+          end
         end
-        Book.import books
         sleep(2)  # AmazonAPI制限のため、2秒待つ
       end
     end
@@ -71,12 +81,12 @@ class Book < ApplicationRecord
 
   def self.build_amazon_item(item, author)
     book = Book.new
-    book.name = item.get("ItemAttributes/Title")  # 商品タイトル
-    book.sale_date = item.get("ItemAttributes/PublicationDate")  # 発売日
-    book.money = item.get("OfferSummary/LowestNewPrice/Amount")  # 定価
-    book.isbn = item.get("ItemAttributes/ISBN")  # ISBN
-    book.url = item.get("DetailPageURL")  # 詳細ページURL
-    book.image_url = item.get("SmallImage/URL")  # 画像URL
+    book.name = item.title  # 商品タイトル
+    book.sale_date = item.release_date  # 発売日
+    #book.money = item.get("OfferSummary/LowestNewPrice/Amount")  # 定価
+    book.isbn = (item.get(%w{ItemInfo ExternalIds EANs DisplayValues}) || [""])[0]  # 楽天APIがEANを取得しているのでISBNとして扱う
+    book.url = item.detail_url  # 詳細ページURL
+    book.image_url = item.image_url  # 画像URL
     book.author = author
     
     book
