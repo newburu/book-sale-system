@@ -1,6 +1,10 @@
 class Book < ApplicationRecord
   belongs_to :author
 
+  def default_url
+    self.amazon_url || self.url
+  end
+
   def self.update_books_link_by_amazon
     Book.transaction do
       user_authors = UserAuthor.all.pluck(:author_id).uniq
