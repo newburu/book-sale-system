@@ -8,6 +8,9 @@ class User < ApplicationRecord
   # 好きな作家
   has_many :user_authors
 
+  # 本
+  has_many :user_books
+
   validates :name, presence: true
 
   #############
@@ -81,6 +84,10 @@ class User < ApplicationRecord
       config.access_token        = ENV["TWITTER_ACCESS_TOKEN"]
       config.access_token_secret = ENV["TWITTER_ACCESS_TOKEN_SECRET"]
     end
+  end
+
+  def buy?(book)
+    self.user_books.where(isbn: book.isbn).exists?
   end
 
 end
