@@ -13,4 +13,8 @@ module ApplicationHelper
     login? && current_user.admin?
   end
   
+  def check_mark(flg)
+    flg ? fa_icon('check-circle') : ''
+  end
+
 end
