@@ -87,7 +87,7 @@ class User < ApplicationRecord
   end
 
   def buy?(book)
-    self.user_books.where(isbn: book.isbn).exists?
+    self.user_books.find_by(user_id: self.id, isbn: book.isbn).try(:buy?)
   end
 
 end

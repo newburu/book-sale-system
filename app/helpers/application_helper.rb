@@ -13,8 +13,12 @@ module ApplicationHelper
     login? && current_user.admin?
   end
   
-  def check_mark(flg)
-    flg ? fa_icon('check-circle') : ''
+  def check_mark(book)
+    if current_user.buy?(book)
+      link_to '済', buy_book_path(book.id, {user_id: current_user.id, buy_flg: false}), remote: true, class: 'btn btn-primary'
+    else
+      link_to '未', buy_book_path(book.id, {user_id: current_user.id, buy_flg: true }), remote: true, class: 'btn btn-secondary'
+    end
   end
 
 end
