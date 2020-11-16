@@ -32,6 +32,7 @@ class Book < ApplicationRecord
             p update_book
             if update_book.present?
               update_book.amazon_url = book.url
+              update_book.money = book.money
               update_book.save
             end
           end
@@ -72,6 +73,7 @@ class Book < ApplicationRecord
             if update_book.present?
               p update_book
               update_book.amazon_url = book.url
+              update_book.money = book.money
               update_book.save
             end
           end
@@ -87,7 +89,7 @@ class Book < ApplicationRecord
     book = Book.new
     book.name = item.title  # 商品タイトル
     book.sale_date = item.release_date  # 発売日
-    #book.money = item.get("OfferSummary/LowestNewPrice/Amount")  # 定価
+    book.money = ((item.get(%w{Offers Listings}) || [""])[0]).dig("Price", "Amount")  # 定価
     book.isbn = (item.get(%w{ItemInfo ExternalIds EANs DisplayValues}) || [""])[0]  # 楽天APIがEANを取得しているのでISBNとして扱う
     book.url = item.detail_url  # 詳細ページURL
     book.image_url = item.image_url  # 画像URL

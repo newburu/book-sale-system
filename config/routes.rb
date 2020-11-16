@@ -1,5 +1,9 @@
 Rails.application.routes.draw do
-  resources :books
+  resources :books do
+    member do
+      get :buy
+    end
+  end
   resources :user_options
   resources :user_authors
   resources :publishers
