@@ -22,6 +22,7 @@ table.table.table-striped.table-hover.table-responsive.table-bordered
       th = sort_link(@q, :money)
       th = sort_link(@q, :isbn)
       th = sort_link(@q, :author_name)
+      th = sort_link(@q, :buy)
       th
 
   tbody
@@ -38,8 +39,10 @@ table.table.table-striped.table-hover.table-responsive.table-bordered
         td = number_to_currency(book.money)
         td = book.isbn
         td = book.author.name
+        td id="buy_flg_#{book.isbn}"
+          = check_mark(book)
         td
-          = link_to t('simple_form.btn.show'), book_path(book, isbn: book.isbn, mode: 'view'), class: 'btn btn-light'
+          = link_to t('simple_form.btn.show'), book_path(book, isbn: book.isbn, mode: 'view'), {class: 'btn btn-light'}
 
 hr
 = paginate @books

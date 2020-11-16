@@ -17,6 +17,14 @@ class BooksController < InheritedResources::Base
     @book = Book.find_by_isbn(params[:isbn]) if @book.nil?
   end
 
+  def buy
+    @book = Book.find_by_id(params[:id])
+    @user = User.find_by_id(params[:user_id])
+    @user_book = UserBook.find_or_initialize_by(user_id: @user.id, isbn: @book.isbn)
+    @user_book.buy = params[:buy_flg]
+    @user_book.save
+  end
+
   private
 
     def book_params
