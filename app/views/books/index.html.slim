@@ -53,7 +53,7 @@ table.table.table-striped.table-hover.table-responsive.table-bordered
         tr
           td = link_to book.name, book.default_url, {target: "_blank"}
           td
-            = afilink(@book)
+            = afilink(book)
           td = number_to_currency(book.money)
           td = book.sale_date
           td = book.isbn
