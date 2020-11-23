@@ -9,7 +9,7 @@ hr
   .card-header
     strong = "#{t('activerecord.attributes.book.image_url')}:"
   .card-body
-    = link_to image_tag(@book.image_url || "now_printing.png", {size: Settings.system[:image][:thumbnail][:size]}), @book.default_url, {target: "_blank"}
+    = afilink(@book)
 .card
   .card-header
     strong = "#{t('activerecord.attributes.book.money')}:"
