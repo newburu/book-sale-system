@@ -60,6 +60,7 @@ gem 'twitter'
 gem 'oauth'
 gem 'omniauth'
 gem 'omniauth-twitter'
+gem 'omniauth-rails_csrf_protection', '~> 0.1'
 gem 'friendly_id'
 group :development, :test do
   gem 'rspec-rails'
@@ -135,3 +136,8 @@ gem 'jpmobile'
 
 # 楽天API
 gem 'rakuten_web_service'
+
+# 脆弱性チェック
+group :development do
+  gem 'bundler-audit'
+end
